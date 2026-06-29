@@ -12,9 +12,9 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  name = '';
   username = '';
   password = '';
+  confirmPassword = '';
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -22,20 +22,23 @@ export class RegisterComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onRegister() {
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Passwords do not match!';
+      return;
+    }
+
     this.isLoading = true;
     this.errorMessage = '';
     this.authService.register({
-      name: this.name,
       username: this.username,
-      password: this.password,
-      role: 'student'
+      password: this.password
     }).subscribe({
-      next: (response: any) => {
+      next: (response) => {
         this.isLoading = false;
-        this.successMessage = 'Account created! Redirecting to login...';
-        setTimeout(() => this.router.navigate(['/login']), 1500);
+        this.successMessage = 'Account created! Redirecting to dashboard...';
+        setTimeout(() => this.router.navigate(['/dashboard']), 1500);
       },
-      error: (err: any) => {
+      error: (err) => {
         this.isLoading = false;
         this.errorMessage = err.error?.message || 'Registration failed. Try a different username.';
       }

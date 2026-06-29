@@ -1,0 +1,35 @@
+<div class="results-container">
+  <div class="page-header">
+    <h1>📊 Your Results</h1>
+    <p>Track your quiz performance</p>
+  </div>
+
+  <div class="stats-section">
+    <div class="stat-card">
+      <div class="stat-value">{{ averageScore }}%</div>
+      <div class="stat-label">Average Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ results.length }}</div>
+      <div class="stat-label">Quizzes Taken</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ results.filter(r => r.status === 'Passed').length }}</div>
+      <div class="stat-label">Passed</div>
+    </div>
+  </div>
+
+  <div class="results-list">
+    <h2>Quiz History</h2>
+    <div class="result-item" *ngFor="let result of results">
+      <div class="result-info">
+        <h3>{{ result.quiz }}</h3>
+        <p class="result-date">{{ result.date | date: 'MMM dd, yyyy' }}</p>
+      </div>
+      <div class="result-score" [class]="getScoreColor(result.score)">
+        <div class="score-value">{{ result.score }}/{{ result.total }}</div>
+        <div class="score-percentage">{{ (result.score / result.total * 100) | number: '1.0-0' }}%</div>
+      </div>
+    </div>
+  </div>
+</div>

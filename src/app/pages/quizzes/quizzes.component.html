@@ -1,0 +1,20 @@
+<div class="quizzes-container">
+  <div class="page-header">
+    <h1>✏️ My Quizzes</h1>
+    <p>Take a quiz to test your knowledge</p>
+  </div>
+
+  <div class="quizzes-list">
+    <div class="quiz-item" *ngFor="let quiz of quizzes">
+      <div class="quiz-info">
+        <h3>{{ quiz.title }}</h3>
+        <div class="quiz-meta">
+          <span class="difficulty" [class]="getDifficultyColor(quiz.difficulty)">{{ quiz.difficulty }}</span>
+          <span class="questions">{{ quiz.questions }} questions</span>
+          <span class="duration">⏱️ {{ quiz.duration }}</span>
+        </div>
+      </div>
+      <button class="start-btn">Start Quiz</button>
+    </div>
+  </div>
+</div>

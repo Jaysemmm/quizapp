@@ -24,24 +24,18 @@ export class LoginComponent {
     this.isLoading = true;
     this.errorMessage = '';
     this.authService.login({
-      username: this.username,
+      email: this.username,  // Backend accepts both username and email in 'email' field
       password: this.password
     }).subscribe({
-     next: (response: any) => {
-  this.isLoading = false;
-  this.successMessage = 'Welcome back, ' + response.user.name + '!';
-  this.authService.saveUser(response.user);
-  setTimeout(() => {
-    if (response.user.role === 'teacher') {
-      this.router.navigate(['/admin']);
-    } else {
-      this.router.navigate(['/dashboard']);
-    }
-  }, 1000);
-      },
-      error: (err: any) => {
+      next: (response) => {
         this.isLoading = false;
-        this.errorMessage = 'Invalid username or password!';
+        const userName = response.data?.user?.name || 'User';
+        this.successMessage = 'Welcome, ' + userName + '!';
+        setTimeout(() => this.router.navigate(['/dashboard']), 1000);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.error?.message || 'Invalid username or password!';
       }
     });
   }
