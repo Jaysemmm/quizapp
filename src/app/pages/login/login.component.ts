@@ -17,7 +17,8 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
-
+  showPassword = false;
+  
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin() {
@@ -38,5 +39,9 @@ export class LoginComponent {
         this.errorMessage = err.error?.message || 'Invalid username or password!';
       }
     });
+  }
+
+  togglePassword(): void { 
+    this.showPassword = !this.showPassword;
   }
 }
