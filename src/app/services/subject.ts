@@ -59,13 +59,16 @@ export class SubjectService {
 
   constructor(private apollo: Apollo) {}
 
-  getSubjects(): Observable<Subject[]> {
-    return this.apollo
-      .watchQuery<{ subjects: Subject[] }>({ query: GET_SUBJECTS })
-      .valueChanges.pipe(
-        map(result => (result.data?.subjects ?? []) as Subject[])
-      );
-  }
+ getSubjects(forceRefresh = false): Observable<Subject[]> {
+  return this.apollo
+    .watchQuery<{ subjects: Subject[] }>({
+      query: GET_SUBJECTS,
+      fetchPolicy: forceRefresh ? 'network-only' : 'cache-and-network',
+      notifyOnNetworkStatusChange: true,
+    })
+    .valueChanges
+    .pipe(map(result => (result.data?.subjects ?? []) as Subject[]));
+}
 
   createSubject(name: string, description: string, is_published: boolean = true): Observable<Subject> {
     return this.apollo
